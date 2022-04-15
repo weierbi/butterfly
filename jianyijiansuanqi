@@ -111,4 +111,78 @@ res=res-m;  i++ ;
 printf("res =%d",res);
 return 0;
 }
+
+
+
+V4：
+#include <stdio.h>
+#include <stdlib.h>
+main()
+{
+	char ch[100];
+	gets(ch);
+	char hh[10];
+	char kh[50];
+	double num[51];
+	double sum=0;
+	int i,j=0,m=0,n=0;
+	for(i=0;;i++)
+	{
+		if(ch[i]>='0'&&ch[i]<='9'||ch[i]=='.')
+		{
+			hh[j++]=ch[i];
+		}
+		else
+		{
+			num[n++]=atof(hh);
+			kh[m++]=ch[i];
+			j=0;
+		}
+		if(ch[i]=='\0')
+            break;
+	}
+	puts(kh);
+	for(i=0;i<n;i++)
+	    printf("%lf ",num[i]); 
+    //fenli
+    for(i=0;kh[i];i++)
+    {
+    	if(kh[i]=='*')
+    	{
+	    	num[i]=num[i]*num[i+1];
+	    	for(n=i+1;n<50;n++)
+	    	    num[n]=num[n+1];
+            for(n=i;kh[n];n++)
+                kh[n]=kh[n+1];
+	    }
+	    if(kh[i]=='/')
+    	{
+	    	num[i]=num[i]/num[i+1];
+	    	for(n=i+1;n<50;n++)
+	    	    num[n]=num[n+1];
+            for(n=i;kh[n];n++)
+                kh[n]=kh[n+1];
+	    }
+    }
+    sum=num[0];
+    for(i=0;kh[i];i++)
+    {
+    	if(kh[i]=='+')
+    	sum=sum+num[i+1];
+		if(kh[i]=='-')
+    	sum=sum-num[i+1];
+    }
+    printf("\n%lf ",sum);
+}
+
+
+
+
+
+
+
+
+
+
+
     
