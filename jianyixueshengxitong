@@ -1,0 +1,51 @@
+#include<stdio.h>
+struct  node
+{
+  int  xh;
+  char  xm[50];
+  int sg;
+  int  tz;
+  double  cj;
+  struct  node * next;
+}
+void  main()
+{
+  node a={101,"刘俊",175,170,90};
+  node b={102,"马勤涛"，174,65,91};
+  node c={103,"陈春宏",173,60,92};
+  node * head;
+  head=&a;
+  a.next=&b;
+  a.next=&c;
+  c.next=NULL;
+  while(head!=NULL)
+   {
+      printf("学号:%d,姓名;:%s,身高:%d,体重:%d,成绩:%.3f\n",
+    head->xh,head->xm,head->sg,head->tz,head->cj);
+      head=head->next;
+   }
+  printf("\n\n");
+  int xh2;
+  printf("请输入要删除的学号: ");
+  scanf("%d"，&xh2);
+  if(a.xh==xh2)
+  {
+    head=a.next;
+    printf("找到该项数据并删除，结果如下:\n\n");
+  }
+  else  if(b.xh==xh2)
+         {
+           a.next=b.next;
+           printf("找到该项数据并删除，结果如下:\n\n");
+       }
+    else
+      printf("没有找到该项数据!\");n
+    head=&a;
+    while(head!=NULL)
+    {  
+      printf("学号:%d,姓名;:%s,身高:%d,体重:%d,成绩:%.3f\n",
+    head->xh,head->xm,head->sg,head->tz,head->cj);
+  
+      head=head->next;
+    }
+}
