@@ -1,0 +1,44 @@
+#include<stdio.h>
+ struct country
+{	
+char gj[100];	
+int jp;	
+int yp;
+	int tp;
+	int sum;
+ }
+typedef struct country country;
+void main()
+{
+	country c[8];
+	FILE* infp=fopen("D:/file.txt","r");	
+if(infp==NULL)	
+{		
+printf("Error\n");	
+	return 0;	
+}		
+for(int i=0;i<8;i++)
+	{		
+fscanf(infp,"%s %d %d %d %d",
+    c[i].gj,&c[i].jp,&c[i].yp,&c[i].tp,&c[i].sum);	}
+	fclose(infp);		
+FILE *outfp=fopen("D:/file_sorted.txt","w");	
+for(int i=0;i<=7;i++)
+	{		
+   for(int j=0;j<=7;j++)		
+{		
+	if(c[j].jp>c[j+1].jp)	
+		{				
+country t=c[j];				
+c[j]=c[j+1];			
+	c[j+1]=t;		
+	} 
+		} 
+	}	
+for(int i=0;i<8;i++)
+	{		
+fprintf(outfp,"%s\t%d\t%d\t%d\t%d\n",
+   c[i].gj,c[i].jp,c[i].yp,c[i].tp,c[i].sum);	
+} 
+	fclose(outfp);	
+}
