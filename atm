@@ -1,0 +1,304 @@
+#include<stdio.h>
+#include<ctype.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<process.h>
+
+struct band//用户基本属性
+{
+	int id;
+	char name[20];
+	int password;
+	float money;
+}users[6];
+
+void init();
+void welcome();
+int login();
+int display();
+void query();
+void transfer();
+void cunqian();
+void out();
+void changepwd();
+void quit();
+
+int N = 6, zh = 0, mm = 0, A = 0;//N用户数量,zh账号,mm密码,A当前登录账号
+
+void init()
+{
+	users[0].money = 1.1f;
+	FILE* fp;
+	fp = fopen("C:\\Users\\cqie\\Desktop\\account.txt", "r");
+	for (int i = 0; i < N; ++i)
+	{
+		fscanf(fp, "%d%s%d%f", &users[i].id, &users[i].name, &users[i].password, &users[i].money);
+	}
+}
+
+void welcome()
+{
+	printf("                         ATM（破解版）\n");
+	printf("···························\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                    欢迎光临！                    ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("···························\n");
+	system("pause");
+	system("cls");
+}
+int display()//主界面，只能按数字1~6
+{
+	while (1)
+	{
+		printf("                         ATM（破解版）                          \n");
+		printf("···························\n");
+		printf("·                                                  ·\n");
+		printf("·1.查询                                      4.取钱·\n");
+		printf("·                                                  ·\n");
+		printf("·2.转账                                      5.改密·\n");
+		printf("·                                                  ·\n");
+		printf("·3.存钱                                      6.退出·\n");
+		printf("·                                                  ·\n");
+		printf("···························\n");
+		char c;
+		c = getch();
+		if (c >= '1' && c <= '6')
+		{
+			system("cls");
+			return c - '0';
+		}
+		system("cls");
+	}
+}
+
+int login()//登录界面,3次机会
+{
+	for (int i = 3; i > 0; --i)
+	{
+		printf("                         ATM（破解版）                          \n");
+		printf("\n请输入账号:");
+		scanf("%d", &zh);
+		printf("\n请输入密码:");
+		char c;
+		while ((c = getch()) != '\r')
+		{
+			putchar('*');
+			mm = mm * 10 + c - '0';
+		}
+		for (int j = 0; j < N; ++j)
+		{
+			if (zh == users[j].id && mm == users[j].password)
+			{
+				A = j;
+				system("cls");
+				return 1;
+			}
+		}
+		system("cls");
+		printf("                         ATM（破解版）                          \n");
+		printf("\n账号或密码错误！\n\n");
+		printf("\n您还有%d次机会！\n\n", i - 1);
+		zh = 0;
+		mm = 0;
+		system("pause");
+		system("cls");
+	}
+	printf("                         ATM（破解版）                          \n");
+	printf("\nGAME OVER!\n\n");
+	system("pause");
+	system("cls");
+	return 0;
+}
+
+void query()//查询当前用户名、余额
+{
+	printf("                         ATM（破解版）                          \n");
+	printf("···························\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·账户名:%s\t余额:%10.2f                     ·\n", users[A].name, users[A].money);
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("···························\n");
+	system("pause");
+	system("cls");
+}
+void transfer()//转账
+{
+	int n, t = 0;
+	printf("                         ATM（破解版）                          \n");
+	printf("\n\n请输入转账账户:");
+	scanf("%d", &n);
+	if (n == users[A].id)
+	{
+		system("cls");
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n不能给自己转账！\n\n");
+		system("pause");
+		system("cls");
+		return;
+	}
+	for (int i = 0; i < N; ++i)
+	{
+		if (n == users[i].id)
+		{
+			n = i;
+			t = 1;
+			break;
+		}
+	}
+	if (t == 0)
+	{
+		system("cls");
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n此账户不存在！\n\n");
+		system("pause");
+		system("cls");
+	}
+	else
+	{
+		int m;
+		printf("\n\n请输入转账金额:");
+		scanf("%d", &m);
+		if (m > users[A].money)
+		{
+			system("cls");
+			printf("                         ATM（破解版）                          \n");
+			printf("\n\n余额不足！\n\n");
+			system("pause");
+			system("cls");
+			return;
+		}
+		users[n].money += m;
+		users[A].money -= m;
+		system("cls");
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n转账成功！\n\n");
+		system("pause");
+		system("cls");
+	}
+}
+void cunqian()//存钱
+{
+	float x;
+	printf("                         ATM（破解版）                          \n");
+	printf("\n\n请输入存款金额:");
+	scanf("%f", &x);
+	users[A].money += x;
+	system("cls");
+	printf("                         ATM（破解版）                          \n");
+	printf("\n\n存款成功！\n\n");
+	system("pause");
+	system("cls");
+}
+void out()//取钱
+{
+	float x;
+	printf("                         ATM（破解版）                          \n");
+	printf("\n\n请输入取款金额:");
+	scanf("%f", &x);
+	if (x <= users[A].money)
+	{
+		users[A].money -= x;
+		system("cls");
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n取款成功！\n\n");
+	}
+	else
+	{
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n余额不足，请充值！\n\n");
+	}
+	system("pause");
+	system("cls");
+}
+void changepwd()//改密码
+{
+	int mm1, mm2, mm3, t = 0;
+	for (int i = 0; i < 3; ++i)
+	{
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n请输入原密码:");
+		scanf("%d", &mm1);
+		if (mm1 != mm)
+		{
+			printf("                         ATM（破解版）                          \n");
+			printf("\n\n原始密码输入错误！\n\n");
+			system("pause");
+			system("cls");
+			continue;
+		}
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n请输入新密码:");
+		scanf("%d", &mm2);
+		printf("\n\n请再输入一次新密码:");
+		scanf("%d", &mm3);
+		if (mm2 != mm3)
+		{
+			system("cls");
+			printf("                         ATM（破解版）                          \n");
+			printf("\n\n2次密码输入不一致！\n\n");
+			system("pause");
+			system("cls");
+			continue;
+		}
+		t = 1;
+		break;
+	}
+	if (t)
+	{
+		system("cls");
+		users[A].password = mm2;
+		printf("                         ATM（破解版）                          \n");
+		printf("\n\n密码修改成功！\n\n");
+		FILE* fp;
+		fp = fopen("C:\\Users\\cqie\\Desktop\\account.txt", "w");
+		for (int i = 0; i < N; ++i)
+		{
+			fprintf(fp, "%d %s %d %f\n", users[i].id, users[i].name, users[i].password, users[i].money);
+		}
+	}
+	system("pause");
+	system("cls");
+}
+void quit()//退出
+{
+	printf("                         ATM（破解版）                          \n");
+	printf("···························\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                        再见！                    ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("·                                                  ·\n");
+	printf("···························\n");
+}
+
+void main()
+{
+	int t = 1;
+	init();
+	welcome();
+	if (login() == 0)
+		return;
+	while (t)
+	{
+		switch (display())
+		{
+			case 1:query(); break;
+			case 2:transfer(); break;
+			case 3:cunqian(); break;
+			case 4:out(); break;
+			case 5:changepwd(); break;
+			case 6:quit(); t = 0; break;
+		}
+	}
+}
