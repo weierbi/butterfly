@@ -201,7 +201,7 @@ void cunqian()//存钱
 void out()//取钱
 {
 	float x;
-	printf("                         ATM（破解版）                          \n");
+	printf("                        ATM（破解版）                          \n");
 	printf("\n\n请输入取款金额:");
 	scanf("%f", &x);
 	if (x <= users[A].money)
